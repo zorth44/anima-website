@@ -14,20 +14,10 @@ export function getBackdropUrl(backdropPath: string | null, size = "original"): 
   return `${TMDB_IMAGE_BASE_URL}/${size}${backdropPath}`
 }
 
-export interface AnimeQueryResponse {
-  data: any[]
-  pagination: {
-    current_page: number
-    has_next_page: boolean
-    items_per_page: number
-    total_items: number
-    total_pages: number
-  }
-}
-
-export interface AnimeData {
-  id: number
-  attributes: any
+// Function to get episode still image URL
+export function getStillUrl(stillPath: string | null, size = "w300"): string {
+  if (!stillPath) return "/bustling-city-street.png"
+  return `${TMDB_IMAGE_BASE_URL}/${size}${stillPath}`
 }
 
 // Function to search anime
@@ -37,7 +27,7 @@ export async function searchAnime(params: {
   endDate?: string
   page?: number
   size?: number
-}): Promise<AnimeQueryResponse> {
+}) {
   const queryParams = new URLSearchParams()
 
   if (params.keyword) queryParams.append("keyword", params.keyword)
@@ -55,9 +45,44 @@ export async function searchAnime(params: {
   return response.json()
 }
 
-// Function to get anime by ID
-export async function getAnimeById(id: number): Promise<AnimeData> {
-  const response = await fetch(`${API_BASE_URL}/anime/${id}`)
+// Remove the incorrect getAnimeById function and replace it with:
+
+// We don't need this function as there's no direct endpoint for it
+// export async function getAnimeById(tmdbId: number) {
+//   const response = await fetch(`${API_BASE_URL}/anime/${tmdbId}`)
+//
+//   if (!response.ok) {
+//     throw new Error(`API error: ${response.status}`)
+//   }
+//
+//   return response.json()
+// }
+
+// Update the getAnimeSeasons function to use the correct endpoint
+export async function getAnimeSeasons(tmdbId: number) {
+  const response = await fetch(`${API_BASE_URL}/anime/${tmdbId}/seasons`)
+
+  if (!response.ok) {
+    throw new Error(`API error: ${response.status}`)
+  }
+
+  return response.json()
+}
+
+// Update the getSeasonEpisodes function to use the correct endpoint
+export async function getSeasonEpisodes(tmdbId: number, seasonNumber: number) {
+  const response = await fetch(`${API_BASE_URL}/anime/${tmdbId}/seasons/${seasonNumber}`)
+
+  if (!response.ok) {
+    throw new Error(`API error: ${response.status}`)
+  }
+
+  return response.json()
+}
+
+// Update the getEpisodeDetails function to use the correct endpoint
+export async function getEpisodeDetails(tmdbId: number, seasonNumber: number, episodeNumber: number) {
+  const response = await fetch(`${API_BASE_URL}/anime/${tmdbId}/seasons/${seasonNumber}/episodes/${episodeNumber}`)
 
   if (!response.ok) {
     throw new Error(`API error: ${response.status}`)
