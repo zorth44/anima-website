@@ -45,18 +45,22 @@ export async function searchAnime(params: {
   return response.json()
 }
 
-// Remove the incorrect getAnimeById function and replace it with:
+// Function to get anime recommendations
+export async function getAnimeRecommendations(query: string) {
+  const response = await fetch(`${API_BASE_URL}/anime/recommendations`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain",
+    },
+    body: query,
+  })
 
-// We don't need this function as there's no direct endpoint for it
-// export async function getAnimeById(tmdbId: number) {
-//   const response = await fetch(`${API_BASE_URL}/anime/${tmdbId}`)
-//
-//   if (!response.ok) {
-//     throw new Error(`API error: ${response.status}`)
-//   }
-//
-//   return response.json()
-// }
+  if (!response.ok) {
+    throw new Error(`API error: ${response.status}`)
+  }
+
+  return response.json()
+}
 
 // Update the getAnimeSeasons function to use the correct endpoint
 export async function getAnimeSeasons(tmdbId: number) {

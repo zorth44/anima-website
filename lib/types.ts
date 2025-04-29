@@ -72,3 +72,8 @@ export interface EpisodeDetail {
   air_date: string
   still_path: string
 }
+
+export interface AnimeRecommendation {
+  anime: AnimeData
+  recommendationReason: string
+}
